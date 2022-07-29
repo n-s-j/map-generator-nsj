@@ -333,7 +333,7 @@ const handleRadiusInput = (e) => {
 
 const myIcon = L.icon({
 	iconUrl: marker,
-	iconAnchor: [12, 41],
+	iconAnchor: [8, 12],
 });
 
 // Process
