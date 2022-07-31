@@ -36,7 +36,7 @@ export default function SVreq(loc, settings) {
 					const timeframeDate = Object.values(res.time[i]).find((val) => isDate(val));
 					console.log(res);
 					console.log(res.tiles.worldSize.height);
-					console.log(SV.getPanorama({ pano: res.time[i].pano }).tiles);
+					SV.getPanorama({ pano: res.time[i].pano }).then((data) => console.log(data.tiles));
 
 					if (settings.rejectUnofficial && res.time[i].pano.length != 22) continue; // Checks if pano ID is 22 characters long. Otherwise, it's an Ari
 					const iDate = Date.parse(timeframeDate.getFullYear() + "-" + (timeframeDate.getMonth() > 8 ? "" : "0") + (timeframeDate.getMonth() + 1));
