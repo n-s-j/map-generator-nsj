@@ -39,11 +39,9 @@
 	
 	<div class="overlay top right flex-col gap">
 		<div v-if="!state.started" class="settings">
-
+			<button type="button" class="collapsible">{{ collapse_content() }}</button>
 			<div class="content_test">
-				<h4 class="center">
-				{{ collapse_content(country) }}
-				Settings</h4>
+				<h4 class="center">Settings</h4>
 			</div>
 			
 			<div v-if="!settings.rejectOfficial">
@@ -1183,8 +1181,8 @@ button.close {
 .line {
   line-height: 1.5rem;
 }
-.content_test {
-  display: none;
-  overflow: hidden;
+.collapsible {
+  border: none;
+  outline: none;
 }
 </style>
