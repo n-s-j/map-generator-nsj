@@ -39,8 +39,8 @@
 	
 	<div class="overlay top right flex-col gap">
 		<div v-if="!state.started" class="settings">
-			<button type="button" class="collapsible">Open Collapsible</button>
-			<div class="collapse_content">
+			<button type="button" class="collapsible">{{ collapse_content() }}</button>
+			<div class="content_test">
 				<h4 class="center">Settings</h4>
 			</div>
 			
@@ -572,20 +572,22 @@ const newLocIcon = L.icon({
   iconAnchor: [12, 41],
 });
 
-// Collapisbles
-var coll = document.getElementsByClassName("collapsible");
-var i;
+function collapse_content(){
+	// Collapisbles
+	var coll = document.getElementsByClassName("collapsible");
+	var i;
 
-for (i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.display === "block") {
-      content.style.display = "none";
-    } else {
-      content.style.display = "block";
-    }
-  });
+	for (i = 0; i < coll.length; i++) {
+	  coll[i].addEventListener("click", function() {
+	    this.classList.toggle("active");
+	    var content = this.nextElementSibling;
+	    if (content.style.display === "block") {
+	      content.style.display = "none";
+	    } else {
+	      content.style.display = "block";
+	    }
+	  });
+	}
 }
 
 // Process
@@ -1179,7 +1181,7 @@ button.close {
 .line {
   line-height: 1.5rem;
 }
-.collapse_content {
+.content_test {
   display: none;
   overflow: hidden;
 }
