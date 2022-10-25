@@ -39,8 +39,8 @@
 	
 	<div class="overlay top right flex-col gap">
 		<div v-if="!state.started" class="settings">
+			<Button @click="collapse_content" class="collapsible" text="Settings" title="Settings" />
 			<div class="content_test">
-				{{ collapse_content() }}
 				<h4 class="center">testest</h4>
 			</div>
 			
