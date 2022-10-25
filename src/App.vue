@@ -39,11 +39,9 @@
 	
 	<div class="overlay top right flex-col gap">
 		<div v-if="!state.started" class="settings">
-			<Button @click="collapse_content" class="collapsible" text="Settings ↓" title="Settings" />
-			<div class="content_test">
-				<h4 class="center">testest</h4>
-			</div>
-			
+			<Button @click="collapse_content" class="collapsible" text="Settings" title="Settings" />
+			<div class="content">
+
 			<div v-if="!settings.rejectOfficial">
 			<Checkbox v-model:checked="settings.rejectUnofficial" label="Reject unofficial" />
 			<hr />
@@ -51,6 +49,8 @@
 			
 			<Checkbox v-model:checked="settings.rejectOfficial" label="Find unofficial coverage" />
 			<hr />
+			
+			</div>
 
 			<div v-if="settings.rejectUnofficial && !settings.rejectOfficial">
 				<div v-if="!settings.rejectDescription">
