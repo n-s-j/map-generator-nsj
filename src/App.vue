@@ -39,7 +39,7 @@
 	
 	<div class="overlay top right flex-col gap">
 		<div v-if="!state.started" class="settings">
-			<Button @click="collapse_content" class="collapsible" text="Settings" title="Settings" />
+			<Button @click="collapse_content" class="collapsible" text="Settings ↓" title="Settings" />
 			<div class="content_test">
 				<h4 class="center">testest</h4>
 			</div>
@@ -1184,5 +1184,6 @@ button.close {
 .collapsible {
   border: none;
   outline: none;
+  color: #53e0aa;
 }
 </style>
