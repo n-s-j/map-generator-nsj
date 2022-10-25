@@ -39,7 +39,7 @@
 	
 	<div class="overlay top right flex-col gap">
 		<div v-if="!state.started" class="settings">
-			<h4 class="center">Settings</h4>
+			<h4 class="center" class="collapsible">Settings</h4>
 			
 			<div v-if="!settings.rejectOfficial">
 			<Checkbox v-model:checked="settings.rejectUnofficial" label="Reject unofficial" />
@@ -568,6 +568,22 @@ const newLocIcon = L.icon({
   iconUrl: markerRed,
   iconAnchor: [12, 41],
 });
+
+// Collapisbles
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
 
 // Process
 document.onkeydown = () => {
