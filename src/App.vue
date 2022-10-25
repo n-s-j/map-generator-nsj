@@ -39,7 +39,10 @@
 	
 	<div class="overlay top right flex-col gap">
 		<div v-if="!state.started" class="settings">
-			<h4 class="center">Settings</h4>
+			<button type="button" class="collapsible">Open Collapsible</button>
+			<div class="collapse_content">
+				<h4 class="center">Settings</h4>
+			</div>
 			
 			<div v-if="!settings.rejectOfficial">
 			<Checkbox v-model:checked="settings.rejectUnofficial" label="Reject unofficial" />
@@ -1175,5 +1178,9 @@ button.close {
 }
 .line {
   line-height: 1.5rem;
+}
+.collapse_content {
+  display: none;
+  overflow: hidden;
 }
 </style>
