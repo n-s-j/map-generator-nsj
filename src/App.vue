@@ -39,7 +39,7 @@
 	
 	<div class="overlay top right flex-col gap">
 		<div v-if="!state.started" class="settings">
-			<button type="button" class="collapsible">Settings {{ collapse_content() }}</button>
+			<h4 class="center mb-2">Settings ({{ collapse_content() }})</h4>
 			<div class="content_test">
 				<h4 class="center">testest</h4>
 			</div>
