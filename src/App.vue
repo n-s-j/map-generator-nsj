@@ -789,7 +789,7 @@ async function getLoc(loc, country) {
       getPano(res.location.pano, country);
     }
     
-    if (settings.selectMonths && !settings.rejectOfficial) {
+    if (settings.selectMonths) {
 	if (!res.time?.length) return false;
 	let dateWithin = false;
 	const fromMonth = settings.fromMonth;
