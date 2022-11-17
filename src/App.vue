@@ -806,8 +806,6 @@ async function getLoc(loc, country) {
 
 			if (fromMonth <= toMonth){
 				if (iDateMonth >= fromMonth && iDateMonth <= toMonth && iDateYear >= fromYear && iDateYear <= toYear) {
-					console.log(iDateMonth);
-					console.log(iDateYear);
 					dateWithin = true;
 					break;
 				}
@@ -820,6 +818,7 @@ async function getLoc(loc, country) {
 			}
 
 		} 
+		console.log(dateWithin);
 		if (!dateWithin) return false;
 	}
 	else{
