@@ -805,9 +805,9 @@ async function getLoc(loc, country) {
 			const iDateYear = timeframeDate.getFullYear(); 
 
 			if (fromMonth <= toMonth){
-				console.log(iDateMonth);
-				console.log(iDateYear);
 				if (iDateMonth >= fromMonth && iDateMonth <= toMonth && iDateYear >= fromYear && iDateYear <= toYear) {
+					console.log(iDateMonth);
+					console.log(iDateYear);
 					dateWithin = true;
 					break;
 				}
