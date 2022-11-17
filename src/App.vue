@@ -760,7 +760,20 @@ async function getLoc(loc, country) {
     }
     
     if (settings.rejectOfficial) {
+		const fromMonth = settings.fromMonth;
+		const toMonth = settings.toMonth;
+		const fromYear = settings.fromYear;
+		const toYear = settings.toYear;
 		if (/^\xA9 (?:\d+ )?Google$/.test(res.copyright)) return false;
+		if (settings.selectMonths){
+			if (res.imageDate.slice(0, 4) < fromYear || res.imageDate.slice(0, 4) > toYear) return false;
+			if (fromMonth <= toMonth){
+				if (res.imageDate.slice(5) < fromMonth || res.imageDate.slice(5) > toMonth) return false;
+			}
+			else{
+				if (res.imageDate.slice(5) < fromMonth && res.imageDate.slice(5) > toMonth) return false;
+			}
+		}
     }
 	
 	if (settings.findGeneration && (!settings.checkAllDates || settings.selectMonths)){
@@ -796,7 +809,7 @@ async function getLoc(loc, country) {
 	const toMonth = settings.toMonth;
 	const fromYear = settings.fromYear;
 	const toYear = settings.toYear;
-	if (settings.checkAllDates){
+	if (settings.checkAllDates && !settings.rejectUnofficial){
 		for (var i = 0; i < res.time.length; i++) {
 			const timeframeDate = Object.values(res.time[i]).find((val) => isDate(val));
 
