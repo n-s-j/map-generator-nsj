@@ -803,10 +803,10 @@ async function getLoc(loc, country) {
 			if (settings.rejectUnofficial && !settings.rejectOfficial && res.time[i].pano.length != 22) continue; // Checks if res ID is 22 characters long. Otherwise, it's an Ari
 			const iDateMonth = timeframeDate.getMonth() + 1;
 			const iDateYear = timeframeDate.getFullYear(); 
-			console.log(iDateMonth);
-			console.log(iDateYear);
 
 			if (fromMonth <= toMonth){
+				console.log(iDateMonth);
+				console.log(iDateYear);
 				if (iDateMonth >= fromMonth && iDateMonth <= toMonth && iDateYear >= fromYear && iDateYear <= toYear) {
 					dateWithin = true;
 					break;
