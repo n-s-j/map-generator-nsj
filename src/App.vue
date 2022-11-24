@@ -117,7 +117,7 @@
 				<Checkbox v-model:checked="settings.cluster" v-on:change="updateClusters" label="Cluster markers" title="For lag reduction." />
 				<Checkbox
 				 v-model:checked="settings.disableColors"
-				 v-on:change="removeColors()"
+				 v-on:change="removeColors"
 				 label="Disable colored markings"
 				/>
 				<Checkbox
