@@ -7,7 +7,7 @@
 			<div class="flex gap">
 				<Button @click="selectAll" class="bg-success" text="Select all" title="Select all" />
 				<Button v-if="selected.length" @click="deselectAll" class="bg-danger" text="Deselect all" title="Deselect all" />
-			</div> 
+			</div>
 		</div>
 
 		<div v-if="selected.length" class="selected">
@@ -710,9 +710,8 @@ function updateClusters() {
 
 function removeColors(){
 	Object.values(markerLayers).forEach((markerLayer) => {
-		for (int i = 0; i < markerLayer.length; i++){
-			markerLayer[i].setIcon("gen4");
-		}
+		markerLayer[0].setIcon("gen4");
+
 	});
 	settings.gen4Marker = false;
 	settings.gen2Or3Marker = false;
