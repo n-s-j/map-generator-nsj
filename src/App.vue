@@ -115,10 +115,15 @@
 			<h4 class="center mb-2">Marker settings</h4>
 			<div v-if="settings.rejectUnofficial && !settings.rejectOfficial">
 				<Checkbox v-model:checked="settings.cluster" v-on:change="updateClusters" label="Cluster markers" title="For lag reduction." />
-			       <Checkbox
-				v-model:checked="settings.gen4Marker"
-				v-on:change="updateMarkerDisplay('gen4')"
-				label="Gen 4 Update"
+				<Checkbox
+				 v-model:checked="settings.disableColors"
+				 v-on:change="removeColors()"
+				 label="Disable colored markings"
+				/>
+				<Checkbox
+				 v-model:checked="settings.gen4Marker"
+				 v-on:change="updateMarkerDisplay('gen4')"
+				 label="Gen 4 Update"
 				/>
 				<Checkbox
 				 v-model:checked="settings.gen2Or3Marker"
@@ -324,6 +329,7 @@ const settings = reactive({
 	gen4Marker: true,
   	gen2Or3Marker: true,
   	gen1Marker: true,
+	disableColors: false,
   	newRoadMarker: true,
   	onlyOneInTimeframe: false,
   	oneCountryAtATime: false,
@@ -699,6 +705,19 @@ function updateClusters() {
   Object.values(markerLayers).forEach((markerLayer) => {
     if (settings.cluster) markerLayer.enableClustering();
     else markerLayer.disableClustering();
+  });
+}
+
+function removeColors(){
+  Object.values(markerLayers).forEach((markerLayer) => {
+    if (settings.disableColors){
+		map.removeLayer(markerLayer);
+		map.addLayer(preHiddenLayers["gen4"]);
+		settings.gen4Marker = false;
+		settings.gen2Or3Marker = false;
+		settings.gen1Marker = false;
+		settings.newRoadMarker = false;
+	}
   });
 }
 
