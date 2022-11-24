@@ -711,8 +711,7 @@ function updateClusters() {
 function removeColors(){
   Object.values(markerLayers).forEach((markerLayer) => {
     if (settings.disableColors){
-		map.removeLayer(markerLayer);
-		map.addLayer(markerLayers["gen4"]);
+		markerLayer.setIcon(gen4Icon);
 		settings.gen4Marker = false;
 		settings.gen2Or3Marker = false;
 		settings.gen1Marker = false;
