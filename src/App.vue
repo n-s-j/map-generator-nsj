@@ -712,7 +712,7 @@ function removeColors(){
   Object.values(markerLayers).forEach((markerLayer) => {
     if (settings.disableColors){
 		map.removeLayer(markerLayer);
-		map.addLayer(preHiddenLayers["gen4"]);
+		map.addLayer(markerLayers["gen4"]);
 		settings.gen4Marker = false;
 		settings.gen2Or3Marker = false;
 		settings.gen1Marker = false;
