@@ -7,7 +7,7 @@
 			<div class="flex gap">
 				<Button @click="selectAll" class="bg-success" text="Select all" title="Select all" />
 				<Button v-if="selected.length" @click="deselectAll" class="bg-danger" text="Deselect all" title="Deselect all" />
-			</div>
+			</div> 
 		</div>
 
 		<div v-if="selected.length" class="selected">
