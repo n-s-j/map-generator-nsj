@@ -709,9 +709,11 @@ function updateClusters() {
 }
 
 function removeColors(){
-	markerLayers["gen1"].setIcon(gen4Icon);
-	markerLayers["gen2Or3"].setIcon(gen4Icon);
-	markerLayers["newRoad"].setIcon(gen4Icon);
+	Object.values(markerLayers).forEach((markerLayer) => {
+		for (i in markerLayer){
+			i.setIcon(gen4Icon);
+		}
+	});
 	settings.gen4Marker = false;
 	settings.gen2Or3Marker = false;
 	settings.gen1Marker = false;
