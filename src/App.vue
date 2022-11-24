@@ -710,8 +710,8 @@ function updateClusters() {
 
 function removeColors(){
 	Object.values(markerLayers).forEach((markerLayer) => {
-		for (i in markerLayer){
-			i.setIcon(gen4Icon);
+		for (int i = 0; i < markerLayer.size(); i++){
+			markerLayer[i].setIcon(gen4Icon);
 		}
 	});
 	settings.gen4Marker = false;
