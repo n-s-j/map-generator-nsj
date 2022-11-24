@@ -709,15 +709,13 @@ function updateClusters() {
 }
 
 function removeColors(){
-  Object.values(markerLayers).forEach((markerLayer) => {
-    if (settings.disableColors){
-		markerLayer.setIcon(gen4Icon);
-		settings.gen4Marker = false;
-		settings.gen2Or3Marker = false;
-		settings.gen1Marker = false;
-		settings.newRoadMarker = false;
-	}
-  });
+	markerLayers["gen1"].setIcon(gen4Icon);
+	markerLayers["gen2Or3"].setIcon(gen4Icon);
+	markerLayers["newRoad"].setIcon(gen4Icon);
+	settings.gen4Marker = false;
+	settings.gen2Or3Marker = false;
+	settings.gen1Marker = false;
+	settings.newRoadMarker = false;
 }
 
 function updateMarkerDisplay(gen) {
