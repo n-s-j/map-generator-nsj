@@ -843,7 +843,7 @@ async function getLoc(loc, country) {
 	    if (settings.pinpointSearch && (res.links.length == 2 && Math.abs(res.links[0].heading - res.links[1].heading) > settings.pinpointAngle)) return false;
     }
 	  
-	if (res.links.length > 60){
+	if (res.links.length > 50){
 		console.log(res.time.length);
 	}
 	else{
