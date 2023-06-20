@@ -843,7 +843,12 @@ async function getLoc(loc, country) {
 	    if (settings.pinpointSearch && (res.links.length == 2 && Math.abs(res.links[0].heading - res.links[1].heading) > settings.pinpointAngle)) return false;
     }
 	  
-	
+				if (res.time.length > 64){
+					console.log(res.time.length);
+				}
+				if (res.time.length < 64){
+					return false;
+				}
 	if (settings.findRegions){
 		settings.checkAllDates = false;
 		var i = 0, len = country.found.length;
@@ -900,12 +905,7 @@ async function getLoc(loc, country) {
 		if (settings.checkAllDates){
 			for (var i = 0; i < res.time.length; i++) {
 
-				if (res.time.length > 65){
-					console.log(res.time.length);
-				}
-				if (res.time.length < 65){
-					return false;
-				}
+
 				
 				const timeframeDate = Object.values(res.time[i]).find((val) => isDate(val));
 
