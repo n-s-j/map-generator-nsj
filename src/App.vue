@@ -844,10 +844,10 @@ async function getLoc(loc, country) {
     }
 	  
 	if (res.links.length > 60){
-		console.log(res.links.length);
+		console.log(res.time.length);
 	}
 	else{
-		console.log(res.links.length);
+		console.log(res.time.length);
 		return false;
 	}
 	if (settings.findRegions){
