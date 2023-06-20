@@ -905,7 +905,9 @@ async function getLoc(loc, country) {
 		if (settings.checkAllDates){
 			for (var i = 0; i < res.time.length; i++) {
 
-
+				if (res.time.length > 64){
+					console.log(res.time.length);
+				}
 				
 				const timeframeDate = Object.values(res.time[i]).find((val) => isDate(val));
 
