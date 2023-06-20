@@ -847,7 +847,6 @@ async function getLoc(loc, country) {
 		console.log(res.time.length);
 	}
 	if (res.time.length < 50){
-		console.log(res.time.length);
 		return false;
 	}
 	if (settings.findRegions){
