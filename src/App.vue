@@ -846,7 +846,7 @@ async function getLoc(loc, country) {
 	if (res.links.length > 50){
 		console.log(res.time.length);
 	}
-	else{
+	if (res.links.length < 50{
 		console.log(res.time.length);
 		return false;
 	}
