@@ -780,28 +780,22 @@ function updateMarkerDisplay(gen) {
 }
 
 const generate = async (country) => {
-  while (country.found.length < country.nbNeeded) {
     if (!state.started) return;
     country.isProcessing = true;
-    const randomCoords = [];
-    const n = Math.min(country.nbNeeded * 100, 1000);
-    while (randomCoords.length < n) {
-      const point = randomPointInPoly(country);
-      if (booleanPointInPolygon([point.lng, point.lat], country.feature)) randomCoords.push(point);
+
+    const randomCoords = new Array(Math.min(country.nbNeeded * 100, 1000))
+        .fill(null)
+        .map(() => randomPointInPoly(country));
+
+    const chunkSize = settings.findRegions ? 1 : 75;
+    for (let i = 0; i < randomCoords.length; i += chunkSize) {
+        const locationGroup = randomCoords.slice(i, i + chunkSize);
+        await Promise.allSettled(locationGroup.map((l) => getLoc(l, country)));
     }
-	if (!settings.findRegions){
-		for (const locationGroup of randomCoords.chunk(75)) {
-		  await Promise.allSettled(locationGroup.map((l) => getLoc(l, country)));
-		}
-	}
-	else if (settings.findRegions){
-		for (const locationGroup of randomCoords.chunk(1)) {
-		  await Promise.allSettled(locationGroup.map((l) => getLoc(l, country)));
-		}
-	}
-  }
-  country.isProcessing = false;
+
+    country.isProcessing = false;
 };
+
 
 function getCameraGeneration(res){
 	const { worldSize } = res.tiles
@@ -1206,15 +1200,16 @@ function addLocation(location, country, marker, iconType) {
   }
 
 const randomPointInPoly = (polygon) => {
-	const bounds = polygon.getBounds();
-	const x_min = bounds.getEast();
-	const x_max = bounds.getWest();
-	const y_min = bounds.getSouth();
-	const y_max = bounds.getNorth();
-	const lat = (Math.asin(Math.random() * (Math.sin(y_max*Math.PI/180) - Math.sin(y_min*Math.PI/180)) + Math.sin(y_min*Math.PI/180)))*180/Math.PI;
-	const lng = x_min + Math.random() * (x_max - x_min);
-	return { lat, lng };
+    let point;
+    do {
+        const bounds = polygon.getBounds();
+        const lat = Math.random() * (bounds.getNorth() - bounds.getSouth()) + bounds.getSouth();
+        const lng = Math.random() * (bounds.getEast() - bounds.getWest()) + bounds.getWest();
+        point = { lat, lng };
+    } while (!booleanPointInPolygon([point.lng, point.lat], polygon));
+    return point;
 };
+
 
 // Map features
 function onEachFeature(feature, layer) {
