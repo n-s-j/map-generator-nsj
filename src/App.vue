@@ -1163,17 +1163,19 @@ function addLoc(pano, country) {
     return
   }
   SV.getPanorama(
-    { pano: previousPano },
-    (previousPano) => {
-      if (previousPano.tiles.worldSize.height === 1664) { // Gen 1
-        return addLocation(location, country, true, gen1Icon);
-      } else if (previousPano.tiles.worldSize.height === 6656) { // Gen 2 or 3
-        return addLocation(location, country, true, gen2Or3Icon);
-      } else { // Gen 4
-        return addLocation(location, country, true, gen4Icon);
+      { pano: previousPano },
+      async (previousPano) => {
+        if (previousPano.tiles.worldSize.height === 1664) { // Gen 1
+          return addLocation(location, country, true, gen1Icon);
+        } else if (
+          previousPano.tiles.worldSize.height === 6656 // Gen 2 or 3
+        ) {
+          return addLocation(location, country, true, gen2Or3Icon);
+        } else { // Gen 4
+          return addLocation(location, country, true, gen4Icon);
+        }
       }
-    }
-  );
+    );
 }
 
 function addLocation(location, country, marker, iconType) {
