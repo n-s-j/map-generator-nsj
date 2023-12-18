@@ -1206,15 +1206,23 @@ function addLocation(location, country, marker, iconType) {
   }
 
 const randomPointInPoly = (polygon) => {
-	const bounds = polygon.getBounds();
-	const x_min = bounds.getEast();
-	const x_max = bounds.getWest();
-	const y_min = bounds.getSouth();
-	const y_max = bounds.getNorth();
-	const lat = (Math.asin(Math.random() * (Math.sin(y_max*Math.PI/180) - Math.sin(y_min*Math.PI/180)) + Math.sin(y_min*Math.PI/180)))*180/Math.PI;
-	const lng = x_min + Math.random() * (x_max - x_min);
-	return { lat, lng };
+    const bounds = polygon.getBounds();
+    const x_min = bounds.getEast();
+    const x_max = bounds.getWest();
+    const y_min = bounds.getSouth();
+    const y_max = bounds.getNorth();
+
+    let point, isInside;
+    do {
+        const lat = Math.random() * (y_max - y_min) + y_min;
+        const lng = Math.random() * (x_max - x_min) + x_min;
+        point = { lat, lng };
+        isInside = polygon.contains(point); // Assuming `contains` method checks if the point is inside the polygon
+    } while (!isInside);
+
+    return point;
 };
+
 
 // Map features
 function onEachFeature(feature, layer) {
