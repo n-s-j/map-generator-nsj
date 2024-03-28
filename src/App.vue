@@ -857,12 +857,6 @@ async function getLoc(loc, country) {
     }
 
 
-	if (res.time.length > 10){
-		if (res.time.length > mostLocs){
-			mostLocs = res.time.length;
-			console.log(res.time.length + res.location.pano);
-		}
-	}
 	  
 	if (settings.findRegions){
 		settings.checkAllDates = false;
@@ -919,6 +913,11 @@ async function getLoc(loc, country) {
 		const toYear = settings.toYear;
 		if (settings.checkAllDates){
 			for (var i = 0; i < res.time.length; i++) {
+				if (res.time.length > mostLocs){
+					mostLocs = res.time.length;
+					console.log(res.time.length + ", " + res.location.pano);
+				}
+				
 				const timeframeDate = Object.values(res.time[i]).find((val) => isDate(val));
 
 				if (settings.rejectUnofficial && res.time[i].pano.length != 22) continue; // Checks if res ID is 22 characters long. Otherwise, it's an Ari
