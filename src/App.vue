@@ -840,6 +840,9 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
+let mostLocs = 0;
+	
 async function getLoc(loc, country) {
   return SV.getPanoramaByLocation(new google.maps.LatLng(loc.lat, loc.lng), settings.radius, (res, status) => {
     if (status != google.maps.StreetViewStatus.OK) return false;
@@ -852,7 +855,14 @@ async function getLoc(loc, country) {
 	    if (settings.getIntersection && !settings.pinpointSearch && res.links.length < 3) return false;
 	    if (settings.pinpointSearch && (res.links.length == 2 && Math.abs(res.links[0].heading - res.links[1].heading) > settings.pinpointAngle)) return false;
     }
-	
+
+
+	if (res.time.length > mostLocs){
+		mostLocs = res.time.length;
+		console.log(res.time.length + res.location);
+	}
+	  
+	  
 	if (settings.findRegions){
 		settings.checkAllDates = false;
 		var i = 0, len = country.found.length;
