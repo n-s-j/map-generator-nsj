@@ -859,7 +859,7 @@ async function getLoc(loc, country) {
 
 	if (res.time.length > mostLocs){
 		mostLocs = res.time.length;
-		console.log(res.time.length + res.location);
+		console.log(res.time.length + res.location.pano);
 	}
 	  
 	  
