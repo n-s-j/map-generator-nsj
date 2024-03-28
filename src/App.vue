@@ -857,11 +857,12 @@ async function getLoc(loc, country) {
     }
 
 
-	if (res.time.length > mostLocs){
-		mostLocs = res.time.length;
-		console.log(res.time.length + res.location.pano);
+	if (res.time.length > 10){
+		if (res.time.length > mostLocs){
+			mostLocs = res.time.length;
+			console.log(res.time.length + res.location.pano);
+		}
 	}
-	  
 	  
 	if (settings.findRegions){
 		settings.checkAllDates = false;
