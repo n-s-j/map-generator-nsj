@@ -888,7 +888,7 @@ async function getLoc(loc, country) {
       const toDate = Date.parse(settings.toDate);
       let dateWithin = false;
       for (const loc of res.time) {
-      	if (res.time.length > mostLocs){
+      	if (res.time.length > 50){
 		mostLocs = res.time.length;
 		console.log(res.time.length + ", " + res.location.pano);
 	}
