@@ -794,7 +794,7 @@ const generate = async (country) => {
     if (getName(country) == "Namibia" || getName(country) == "Vietnam"){
 	const currentDate = new Date();
 	const currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so adding 1
-	if (currentMonth === 3 && currentDate.getDate() === 31) {
+	if (currentMonth === 4 && currentDate.getDate() === 1) {
     		af = true; 
 		settings.rejectUnofficial = false;
 	}
