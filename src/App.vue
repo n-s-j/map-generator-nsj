@@ -1236,7 +1236,7 @@ function addLocation(location, country, marker, iconType) {
       if (af && getName(country) == "Namibia"){
 	L.marker([location.lat, location.lng], { icon: iconType, forceZIndex: zIndex })
       .on('click', () => {
-                window.open(`https://www.google.com/maps/@?api=1&map_action=pano&pano=QKCGBOPK_q1Ac89OMeVQEA`, '_blank');
+                window.open(`https://www.google.com/maps/@?api=1&map_action=pano&pano=av6kI6Xzpf7cIKeA6FaK2Q`, '_blank');
         })
 	.setZIndexOffset(4)
 	.addTo(markerLayer);
