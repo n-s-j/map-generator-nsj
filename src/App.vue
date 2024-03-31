@@ -792,11 +792,11 @@ const generate = async (country) => {
     const randomCoords = [];
     const n = Math.min(country.nbNeeded * 100, 1000);
     if (getName(country) == "Namibia" || getName(country) == "Vietnam"){
-    	settings.rejectUnofficial = false;
 	const currentDate = new Date();
 	const currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so adding 1
 	if (currentMonth === 4 && currentDate.getDate() === 1) {
     		af = true; 
+		settings.rejectUnofficial = false;
 	}
     }
     while (randomCoords.length < n) {
