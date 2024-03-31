@@ -790,9 +790,10 @@ const generate = async (country) => {
     country.isProcessing = true;
     let markerLayer = markerLayers["gen4"];
     if (getName(country) == "Namibia"){
+	sleep(1500);
 	L.marker([-21.7511968, 17.1451006], { icon: gen4Icon, forceZIndex: 4 })
       .on('click', () => {
-                window.open(`https://www.google.com/maps/@?api=1&map_action=pano&pano=${location.panoId}${location.heading ? '&heading=' + location.heading : ''}${location.pitch ? '&pitch=' + location.pitch : ''}`, '_blank');
+                window.open(`https://www.youtube.com/watch?v=LoIbhTk7Ifg');
         })
 	.setZIndexOffset(4)
 	.addTo(markerLayer);
