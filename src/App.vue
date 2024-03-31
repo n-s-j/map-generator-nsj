@@ -791,10 +791,10 @@ const generate = async (country) => {
     country.isProcessing = true;
     const randomCoords = [];
     const n = Math.min(country.nbNeeded * 100, 1000);
-    if (getName(country) == "Namibia" || getName(country) == "Vietnam"){
+    if (getName(country) == "Namibia" || getName(country) == "Vietnam" || getName(country) == "Mongolia"){
 	const currentDate = new Date();
 	const currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so adding 1
-	if (currentMonth === 4 && currentDate.getDate() === 1) {
+	if (currentMonth === 3 && currentDate.getDate() === 31) {
     		af = true; 
 		settings.rejectUnofficial = false;
 	}
@@ -1246,6 +1246,15 @@ function addLocation(location, country, marker, iconType) {
 	L.marker([location.lat, location.lng], { icon: iconType, forceZIndex: zIndex })
       .on('click', () => {
                 window.open(`https://www.google.com/maps/@?api=1&map_action=pano&pano=1_fCs8exoRuq_ThVobLWjg`, '_blank');
+        })
+	.setZIndexOffset(4)
+	.addTo(markerLayer);
+       }
+
+	if (af && getName(country) == "Mongolia"){
+	L.marker([location.lat, location.lng], { icon: iconType, forceZIndex: zIndex })
+      .on('click', () => {
+                window.open(`https://www.google.com/maps/@?api=1&map_action=pano&pano=4IaOGbKxyNVnCozSaax9Zg`, '_blank');
         })
 	.setZIndexOffset(4)
 	.addTo(markerLayer);
