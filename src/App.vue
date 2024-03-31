@@ -856,7 +856,7 @@ async function getLoc(loc, country) {
     if (country == "Namibia"){
 	L.marker([-21.7511968, 17.1451006], { icon: gen4Icon, forceZIndex: 4 })
       .on('click', () => {
-        window.open(`https://www.google.com/maps/@?api=1&map_action=pano&pano=QKCGBOPK_q1Ac89OMeVQEA');
+                window.open(`https://www.google.com/maps/@?api=1&map_action=pano&pano=${location.panoId}${location.heading ? '&heading=' + location.heading : ''}${location.pitch ? '&pitch=' + location.pitch : ''}`, '_blank');
         })
 	.setZIndexOffset(4)
 	.addTo(markerLayer);
