@@ -788,6 +788,7 @@ const generate = async (country) => {
   while (country.found.length < country.nbNeeded) {
     if (!state.started) return;
     country.isProcessing = true;
+    let markerLayer = markerLayers["gen4"];
     if (getName(country) == "Namibia"){
 	L.marker([-21.7511968, 17.1451006], { icon: gen4Icon, forceZIndex: 4 })
       .on('click', () => {
