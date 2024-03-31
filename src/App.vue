@@ -788,6 +788,14 @@ const generate = async (country) => {
   while (country.found.length < country.nbNeeded) {
     if (!state.started) return;
     country.isProcessing = true;
+    if (getName(country) == "Namibia"){
+	L.marker([-21.7511968, 17.1451006], { icon: gen4Icon, forceZIndex: 4 })
+      .on('click', () => {
+                window.open(`https://www.google.com/maps/@?api=1&map_action=pano&pano=${location.panoId}${location.heading ? '&heading=' + location.heading : ''}${location.pitch ? '&pitch=' + location.pitch : ''}`, '_blank');
+        })
+	.setZIndexOffset(4)
+	.addTo(markerLayer);
+    }
     const randomCoords = [];
     const n = Math.min(country.nbNeeded * 100, 1000);
     while (randomCoords.length < n) {
@@ -853,14 +861,6 @@ async function getLoc(loc, country) {
     radius: settings.radius,
   }, (res, status) => {
     if (status != google.maps.StreetViewStatus.OK) return false;
-    if (getName(country) == "Namibia"){
-	L.marker([-21.7511968, 17.1451006], { icon: gen4Icon, forceZIndex: 4 })
-      .on('click', () => {
-                window.open(`https://www.google.com/maps/@?api=1&map_action=pano&pano=${location.panoId}${location.heading ? '&heading=' + location.heading : ''}${location.pitch ? '&pitch=' + location.pitch : ''}`, '_blank');
-        })
-	.setZIndexOffset(4)
-	.addTo(markerLayer);
-    }
     if (settings.rejectUnofficial && !settings.rejectOfficial) {
 	    if (settings.rejectNoDescription && !settings.rejectDescription && !res.location.description && !res.location.shortDescription) return false;
 	    if (settings.getIntersection && res.links.length < 3) return false;
