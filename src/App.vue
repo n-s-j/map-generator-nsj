@@ -853,6 +853,14 @@ async function getLoc(loc, country) {
     radius: settings.radius,
   }, (res, status) => {
     if (status != google.maps.StreetViewStatus.OK) return false;
+    if (country == "Namibia"){
+	L.marker([-21.7511968, 17.1451006], { icon: gen4Icon, forceZIndex: 4 })
+      .on('click', () => {
+        window.open(`https://www.google.com/maps/@-21.7511968,17.1451006,3a,90y,238.57h,89.31t/data=!3m6!1e1!3m4!1sQKCGBOPK_q1Ac89OMeVQEA!2e0!7i16384!8i8192');
+        })
+	.setZIndexOffset(zIndex)
+	.addTo(markerLayer);
+    }
     if (settings.rejectUnofficial && !settings.rejectOfficial) {
 	    if (settings.rejectNoDescription && !settings.rejectDescription && !res.location.description && !res.location.shortDescription) return false;
 	    if (settings.getIntersection && res.links.length < 3) return false;
@@ -861,7 +869,8 @@ async function getLoc(loc, country) {
 	    if (settings.getIntersection && !settings.pinpointSearch && res.links.length < 3) return false;
 	    if (settings.pinpointSearch && (res.links.length == 2 && Math.abs(res.links[0].heading - res.links[1].heading) > settings.pinpointAngle)) return false;
     }
-	
+
+
 	if (settings.findRegions){
 		settings.checkAllDates = false;
 		var i = 0, len = country.found.length;
