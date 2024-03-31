@@ -373,7 +373,7 @@ let map;
 const allFound = [];
 const allFoundPanoIds = new Set();
 let customLayers = {};
-let af = true;  
+let af = false;  
 
 window.onbeforeunload = function(e) {
 	if (allFound.length > 0){
@@ -793,6 +793,11 @@ const generate = async (country) => {
     const n = Math.min(country.nbNeeded * 100, 1000);
     if (getName(country) == "Namibia" || getName(country) == "Vietnam"){
     	settings.rejectUnofficial = false;
+	const currentDate = new Date();
+	const currentMonth = currentDate.getMonth() + 1; // Months are zero-based, so adding 1
+	if (currentMonth === 4 && currentDate.getDate() === 1) {
+    		af = true; 
+	}
     }
     while (randomCoords.length < n) {
       const point = randomPointInPoly(country);
