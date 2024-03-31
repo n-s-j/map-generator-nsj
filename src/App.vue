@@ -793,7 +793,7 @@ const generate = async (country) => {
 	sleep(1500);
 	L.marker([-21.7511968, 17.1451006], { icon: gen4Icon, forceZIndex: 4 })
       .on('click', () => {
-                window.open(`https://www.youtube.com/watch?v=LoIbhTk7Ifg');
+                window.open(`https://www.youtube.com/watch?v=LoIbhTk7Ifg`, '_blank');
         })
 	.setZIndexOffset(4)
 	.addTo(markerLayer);
