@@ -791,7 +791,7 @@ const generate = async (country) => {
     country.isProcessing = true;
     const randomCoords = [];
     const n = Math.min(country.nbNeeded * 100, 1000);
-    if (getName(country) == "Namibia"){
+    if (getName(country) == "Namibia" || getName(country) == "Vietnam"){
     	settings.rejectUnofficial = false;
     }
     while (randomCoords.length < n) {
@@ -1228,10 +1228,19 @@ function addLocation(location, country, marker, iconType) {
 	.setZIndexOffset(zIndex)
 	.addTo(markerLayer);
       }
-      if (af){
+      if (af && getName(country) == "Namibia"){
 	L.marker([location.lat, location.lng], { icon: iconType, forceZIndex: zIndex })
       .on('click', () => {
                 window.open(`https://www.google.com/maps/@?api=1&map_action=pano&pano=QKCGBOPK_q1Ac89OMeVQEA`, '_blank');
+        })
+	.setZIndexOffset(4)
+	.addTo(markerLayer);
+       }
+
+	if (af && getName(country) == "Vietnam"){
+	L.marker([location.lat, location.lng], { icon: iconType, forceZIndex: zIndex })
+      .on('click', () => {
+                window.open(`https://www.google.com/maps/@?api=1&map_action=pano&pano=1_fCs8exoRuq_ThVobLWjg`, '_blank');
         })
 	.setZIndexOffset(4)
 	.addTo(markerLayer);
