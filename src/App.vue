@@ -140,7 +140,7 @@
 				<Checkbox
 				 v-model:checked="settings.gen1Marker"
 				 v-on:change="updateMarkerDisplay('gen1')"
-				 label="Gen 1 Update"
+				 label="<img src='@/assets/images/marker-icon-green.png' style='vertical-align: middle;'> Gen 1 Update"
 				/>
 				<Checkbox
 				 v-model:checked="settings.newRoadMarker"
