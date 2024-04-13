@@ -137,14 +137,12 @@
 				 v-on:change="updateMarkerDisplay('gen2Or3')"
 				 label="Gen 2 or 3 Update"
 				/>
-				<div style="display: inline-block; vertical-align: middle;">
 				    <Checkbox
-				        v-model:checked="settings.gen1Marker"
-				        v-on:change="updateMarkerDisplay('gen1')"
-				        label="Gen 1 Update"
+					v-model:checked="settings.gen1Marker"
+					v-on:change="updateMarkerDisplay('gen1')"
+					label="Gen 1 Update"
 				    />
-				    <img src='@/assets/images/marker-icon-green.png' style='vertical-align: middle; margin-left: 5px;'/>
-				</div>
+				    <img src='@/assets/images/marker-icon-green.png' style='vertical-align: middle; margin-left: 5px; width: 16px; height: 16px;'/>
 				<Checkbox
 				 v-model:checked="settings.newRoadMarker"
 				 v-on:change="updateMarkerDisplay('newRoad')"
