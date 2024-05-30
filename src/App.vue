@@ -905,7 +905,7 @@ async function getLoc(loc, country) {
       }
       if (!dateWithin) return false;
     } 
-    else if (settings.randomInTimeline){
+    if (settings.randomInTimeline){
 	let randomIndex = Math.floor(Math.random() * res.time.length);
 	let pano_test = res.time[randomIndex];
 	if (Date.parse(pano_test.gx) < Date.parse(settings.fromDate) || Date.parse(pano_test.gx) > Date.parse(settings.toDate)) return false;
