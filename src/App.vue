@@ -881,7 +881,7 @@ async function getLoc(loc, country) {
     }
 	
 	if (settings.rejectGen1){
-		if (getCameraGeneration(res) == 1) return false;
+		if (getCameraGeneration(res) == 4) return false;
 	}
 	
 	if (settings.findGeneration && (!settings.checkAllDates || settings.selectMonths)){
