@@ -1237,6 +1237,103 @@ function addLocation(location, country, marker, iconType) {
     }
   }
 
+async function getPanoCaptureTime(panoId) {
+    const accuracy = 2; // Adjust as needed
+    const type = panoId.length > 22 ? 3 : 2; // Handle panoId length
+    
+    // Helper function to convert month and year to timestamp range
+    function monthToTimestamp(m) {
+        const [year, month] = m;
+        const startDate = Math.round(new Date(year, month - 1, 1).getTime() / 1000);
+        const endDate = Math.round(new Date(year, month, 1).getTime() / 1000) - 1;
+        return { startDate, endDate };
+    }
+
+    // Function to convert timestamp to local time
+    async function getLocal(coord, timestamp) {
+        const systemTimezoneOffset = -new Date().getTimezoneOffset() * 60;
+        try {
+            const timezone = await GeoTZ.find(coord[0], coord[1]);
+            const offset = new Date().toLocaleString('en-US', { timeZone: timezone, timeZoneName: 'short' });
+            const offset_hours = parseInt(offset.substring(offset.length - 2, offset.length));
+            const offsetDiff = systemTimezoneOffset - offset_hours * 3600;
+            const convertedTimestamp = Math.round(timestamp - offsetDiff);
+            return convertedTimestamp;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Binary search to find exact capture time
+    async function binarySearch(c, start, end) {
+        let capture;
+        while (end - start >= accuracy) {
+            const mid = Math.round((start + end) / 2);
+            const response = await UE("SingleImageSearch", c, start, end);
+            if (response && response[0][2] === "Search returned no images.") {
+                start = mid + start - end;
+                end = start - mid + end;
+            } else {
+                start = mid;
+            }
+            capture = mid;
+        }
+        return capture;
+    }
+
+    // Format timestamp to a readable format
+    function formatTimestamp(timestamp) {
+        const date = new Date(timestamp * 1000);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+
+    // Fetch metadata and determine capture time
+    try {
+        const metaData = await UE('GetMetadata', panoId);
+        if (!metaData) {
+            throw new Error('Failed to get metadata');
+        }
+
+        let panoDate;
+        try {
+            panoDate = metaData[1][0][6][7]; // Get panoDate from the metadata
+        } catch (error) {
+            panoDate = metaData[1][6][7];
+        }
+
+        if (!panoDate) {
+            throw new Error('Failed to get panoDate');
+        }
+
+        const timeRange = monthToTimestamp(panoDate); // Convert panoDate to timestamp range
+        const lat = parseFloat(metaData[1][0][0][2]); // Latitude
+        const lng = parseFloat(metaData[1][0][0][3]); // Longitude
+
+        const captureTime = await binarySearch({ lat, lng }, timeRange.startDate, timeRange.endDate); // Search for capture time
+
+        if (!captureTime) {
+            throw new Error('Failed to get capture time');
+        }
+
+        const exactTime = await getLocal([lat, lng], captureTime); // Convert capture time to local time
+        return formatTimestamp(exactTime); // Format and return the exact time
+    } catch (error) {
+        console.error(error);
+        return 'Error occurred';
+    }
+}
+
+	const panoId = 'qdoGk2rDZCaO-jVqbeEeRA';
+getPanoCaptureTime(panoId).then(captureTime => {
+    console.log('Capture Time:', captureTime);
+});
+
 const randomPointInPoly = (polygon) => {
 	const bounds = polygon.getBounds();
 	const x_min = bounds.getEast();
