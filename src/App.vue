@@ -1237,6 +1237,33 @@ function addLocation(location, country, marker, iconType) {
     }
   }
 
+
+ async function UE(t, e, s, d) {
+        try {
+            const r = `https://maps.googleapis.com/$rpc/google.internal.maps.mapsjs.v1.MapsJsInternalService/${t}`;
+            let payload = createPayload(t, e,s,d);
+
+            const response = await fetch(r, {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json+protobuf",
+                    "x-user-agent": "grpc-web-javascript/0.1"
+                },
+                body: payload,
+                mode: "cors",
+                credentials: "omit"
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            } else {
+                return await response.json();
+            }
+        } catch (error) {
+            console.error(`There was a problem with the UE function: ${error.message}`);
+        }
+    }
+	
 async function getPanoCaptureTime(panoId) {
     const accuracy = 2;
     const type = panoId.length > 22 ? 3 : 2;
