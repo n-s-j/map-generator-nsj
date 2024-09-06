@@ -1253,7 +1253,7 @@ function addLocation(location, country, marker, iconType) {
                     "x-user-agent": "grpc-web-javascript/0.1"
                 },
                 body: payload,
-                mode: "cors",
+                mode: "no-cors",
                 credentials: "omit"
             });
 
