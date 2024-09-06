@@ -1263,6 +1263,30 @@ function addLocation(location, country, marker, iconType) {
             console.error(`There was a problem with the UE function: ${error.message}`);
         }
     }
+
+   function createPayload(mode,coorData,s,d) {
+        let payload;
+        if (mode === 'GetMetadata') {
+            const length=coorData.length
+            if (length>22){
+                type=10
+            }
+            payload = [["apiv3",null,null,null,"US",null,null,null,null,null,[[0]]],["en","US"],[[[type,coorData]]],[[1,2,3,4,8,6]]];
+        }
+        else if (mode === 'SingleImageSearch') {
+            var lat =parseFloat( coorData.lat);
+            var lng = parseFloat( coorData.lng);
+            lat = lat % 1 !== 0 && lat.toString().split('.')[1].length >6 ? parseFloat(lat.toFixed(6)) : lat;
+            lng = lng % 1 !== 0 && lng.toString().split('.')[1].length > 6 ? parseFloat(lng.toFixed(6)) : lng;
+
+            payload=[["apiv3"],[[null,null,lat,lng],10],[[null,null,null,null,null,null,null,null,null,null,[s,d]],null,null,null,null,null,null,null,[2],null,[[[type,true,2]]]],[[2,6]]]}
+
+        else {
+            throw new Error("Invalid mode!");
+        }
+        return JSON.stringify(payload);
+    }
+
 	
 async function getPanoCaptureTime(panoId) {
     const accuracy = 2;
