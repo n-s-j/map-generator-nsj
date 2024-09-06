@@ -1240,8 +1240,7 @@ function addLocation(location, country, marker, iconType) {
 
  async function UE(t, e, s, d) {
         try {
-            const r_temp = `https://maps.googleapis.com/$rpc/google.internal.maps.mapsjs.v1.MapsJsInternalService/${t}`;
-	    const r = 'https://corsproxy.io/?' + encodeURIComponent(r_temp);
+            const r = `https://maps.googleapis.com/$rpc/google.internal.maps.mapsjs.v1.MapsJsInternalService/${t}`;
             let payload = createPayload(t, e,s,d);
 	    console.log(t,e,s,d);
 	    console.log(payload);
