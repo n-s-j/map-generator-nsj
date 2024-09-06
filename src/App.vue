@@ -1240,7 +1240,7 @@ function addLocation(location, country, marker, iconType) {
 async function getPanoCaptureTime(panoId) {
     const accuracy = 2; // Adjust as needed
     const type = panoId.length > 22 ? 3 : 2; // Handle panoId length
-    
+    console.log(panoId);
     // Helper function to convert month and year to timestamp range
     function monthToTimestamp(m) {
         const [year, month] = m;
@@ -1296,6 +1296,8 @@ async function getPanoCaptureTime(panoId) {
     // Fetch metadata and determine capture time
     try {
         const metaData = await UE('GetMetadata', panoId);
+	console.log(metaData);
+	console.log(panoId);
         if (!metaData) {
             throw new Error('Failed to get metadata');
         }
