@@ -1289,19 +1289,7 @@ function addLocation(location, country, marker, iconType) {
         return JSON.stringify(payload);
     }
 
-	
-async function getPanoCaptureTime(panoId) {
-    const accuracy = 2;
-    const type = panoId.length > 22 ? 3 : 2;
-
-    function monthToTimestamp(m) {
-        const [year, month] = m;
-        const startDate = Math.round(new Date(year, month - 1, 1).getTime() / 1000);
-        const endDate = Math.round(new Date(year, month, 1).getTime() / 1000) - 1;
-        return { startDate, endDate };
-    }
-
-    async function binarySearch(c, start, end) {
+async function binarySearch(c, start, end) {
         let capture;
         while (end - start >= accuracy) {
             const mid = Math.round((start + end) / 2);
@@ -1318,11 +1306,19 @@ async function getPanoCaptureTime(panoId) {
         }
         return capture;
     }
-
-    function formatTimestamp(timestamp) {
+function monthToTimestamp(m) {
+        const [year, month] = m;
+        const startDate = Math.round(new Date(year, month - 1, 1).getTime() / 1000);
+        const endDate = Math.round(new Date(year, month, 1).getTime() / 1000) - 1;
+        return { startDate, endDate };
+}
+function formatTimestamp(timestamp) {
         const date = new Date(timestamp * 1000);
         return date.toISOString();
     }
+async function getPanoCaptureTime(panoId) {
+    const accuracy = 2;
+    const type = panoId.length > 22 ? 3 : 2;
 
     try {
         console.log('Fetching metadata...');
