@@ -1242,6 +1242,8 @@ function addLocation(location, country, marker, iconType) {
         try {
             const r = `https://maps.googleapis.com/$rpc/google.internal.maps.mapsjs.v1.MapsJsInternalService/${t}`;
             let payload = createPayload(t, e,s,d);
+	    console.log(t,e,s,d);
+	    console.log(payload);
 
             const response = await fetch(r, {
                 method: "POST",
