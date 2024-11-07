@@ -789,6 +789,7 @@ function updateMarkerDisplay(gen) {
 
 const generate = async (country) => {
   while (country.found.length < country.nbNeeded) {
+    country.checkedPanos = new Set();
     if (!state.started) return;
     country.isProcessing = true;
     const randomCoords = [];
