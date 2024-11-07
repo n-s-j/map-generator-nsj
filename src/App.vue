@@ -1078,11 +1078,8 @@ function getPano(id, country) {
 
 function getPanoDeep(id, country, depth) {
   if (depth > settings.linksDepth) return;
-  if (country.checkedPanos.has(id)) return;
-  else country.checkedPanos.add(id);
   SV.getPanorama({ pano: id }, async (pano, status) => {
     if (status == google.maps.StreetViewStatus.UNKNOWN_ERROR) {
-      country.checkedPanos.delete(id);
       return getPanoDeep(id, country, depth);
     } else if (status != google.maps.StreetViewStatus.OK) return;
     //successfulRequests++
