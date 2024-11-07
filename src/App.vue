@@ -1076,53 +1076,44 @@ function getPano(id, country) {
   return getPanoDeep(id, country, 0);
 }
 
-function getPanoDeep(id, country, depth) {
+function getPanoDeep(id, country, depth, visitedPanos = new Set()) {
   if (depth > settings.linksDepth) return;
-  if (country.checkedPanos.has(id)) return;
-  else country.checkedPanos.add(id);
+  if (visitedPanos.has(id)) return; // Check if already visited in the current chain
+  visitedPanos.add(id);
+
   SV.getPanorama({ pano: id }, async (pano, status) => {
     if (status == google.maps.StreetViewStatus.UNKNOWN_ERROR) {
-      country.checkedPanos.delete(id);
-      return getPanoDeep(id, country, depth);
+      return getPanoDeep(id, country, depth, visitedPanos); // Retry on unknown error
     } else if (status != google.maps.StreetViewStatus.OK) return;
-    //successfulRequests++
+    
     if (!pano) console.log(status, pano);
+
     const inCountry = booleanPointInPolygon([pano.location.latLng.lng(), pano.location.latLng.lat()], country.feature);
     const isPanoGoodAndInCountry = isPanoGood(pano) && inCountry;
+
     if (settings.checkAllDates && !settings.selectMonths && pano.time) {
       const fromDate = Date.parse(settings.fromDate);
       const toDate = Date.parse(settings.toDate);
 
       for (const loc of pano.time) {
-        if (settings.rejectUnofficial && loc.pano.length != 22) continue; // Checks if pano ID is 22 characters long. Otherwise, it's an Ari
+        if (settings.rejectUnofficial && loc.pano.length != 22) continue;
         const date = Object.values(loc).find((val) => val instanceof Date);
-        const iDate = Date.parse(date.getFullYear() + "-" + (date.getMonth() > 8 ? "" : "0") + (date.getMonth() + 1)); // this will parse the Date object from res.time[i] (like Fri Oct 01 2021 00:00:00 GMT-0700 (Pacific Daylight Time)) to a local timestamp, like Date.parse("2021-09") == 1630454400000 for Pacific Daylight Time
+        const iDate = Date.parse(date.getFullYear() + "-" + (date.getMonth() > 8 ? "" : "0") + (date.getMonth() + 1));
+        
         if (iDate >= fromDate && iDate <= toDate) {
-          // if date ranges from fromDate to toDate, set dateWithin to true and stop the loop
-          getPanoDeep(loc.pano, country, isPanoGoodAndInCountry ? 1 : depth + 1);
-          // TODO: add settings.onlyOneLoc
-          // if(settings.onlyOneLoc)break;
+          getPanoDeep(loc.pano, country, isPanoGoodAndInCountry ? 1 : depth + 1, visitedPanos);
         }
       }
     }
-    if (settings.checkLinks) {
-      if (pano.links) {
-        for (const loc of pano.links) {
-          getPanoDeep(loc.pano, country, isPanoGoodAndInCountry ? 1 : depth + 1);
-        }
-      }
-      if (pano.time) {
-        for (const loc of pano.time) {
-          getPanoDeep(loc.pano, country, isPanoGoodAndInCountry ? 1 : depth + 1);
-        }
-      }
-    }
+
     if (isPanoGoodAndInCountry) {
       addLoc(pano, country);
     }
+
     return pano;
   });
 }
+
 
 const isDate = (date) => {
 	return new Date(date) !== "Invalid Date" && !isNaN(new Date(date));
