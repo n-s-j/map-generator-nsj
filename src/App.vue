@@ -270,6 +270,9 @@
 </template>
 
 <script setup>
+// Install polyfill for brand-new Uint8Array.fromBase64
+import "es-arraybuffer-base64/Uint8Array.fromBase64/auto";
+
 import { onMounted, ref, reactive, computed } from "vue";
 import Button from "@/components/Elements/Button.vue";
 import Checkbox from "@/components/Elements/Checkbox.vue";
@@ -297,6 +300,7 @@ import 'leaflet.markercluster.freezable/dist/leaflet.markercluster.freezable.js'
 import "leaflet-contextmenu/dist/leaflet.contextmenu.js";
 import "leaflet-contextmenu/dist/leaflet.contextmenu.css";
 
+import Pbf from "pbf";
 import { llToPX } from "web-merc-projection";
 import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 
@@ -916,7 +920,7 @@ async function getLoc(loc, country) {
       const toDate = Date.parse(settings.toDate);
       let dateWithin = false;
       for (const loc of res.time) {
-        if (settings.rejectUnofficial && loc.pano.length != 22) continue; // Checks if pano ID is 22 characters long. Otherwise, it's an Ari
+        if (settings.rejectUnofficial && !isOfficialPanoId(loc.pano)) continue;
         const date = Object.values(loc).find((val) => val instanceof Date);
         const iDate = Date.parse(date.getFullYear() + "-" + (date.getMonth() > 8 ? "" : "0") + (date.getMonth() + 1)); // this will parse the Date object from res.time[i] (like Fri Oct 01 2021 00:00:00 GMT-0700 (Pacific Daylight Time)) to a local timestamp, like Date.parse("2021-09") == 1630454400000 for Pacific Daylight Time
         if (iDate >= fromDate && iDate <= toDate) {
@@ -944,7 +948,7 @@ async function getLoc(loc, country) {
 			for (var i = 0; i < res.time.length; i++) {
 				const timeframeDate = Object.values(res.time[i]).find((val) => isDate(val));
 
-				if (settings.rejectUnofficial && res.time[i].pano.length != 22) continue; // Checks if res ID is 22 characters long. Otherwise, it's an Ari
+				if (settings.rejectUnofficial && !isOfficialPanoId(res.time[i].pano)) continue;
 				const iDateMonth = timeframeDate.getMonth() + 1;
 				const iDateYear = timeframeDate.getFullYear(); 
 
@@ -978,9 +982,36 @@ async function getLoc(loc, country) {
   });
 }
 
+function parsePanoId(panoId) {
+  if (/^[-_A-Za-z0-9]{21}[AQgw]$/.test(panoId)) {
+    return { official: true, id: panoId };
+  }
+
+  try {
+    const pbf = new Pbf(Uint8Array.fromBase64(panoId));
+    return pbf.readFields((tag, data) => {
+      if (tag === 1) {
+        const panoType = pbf.readVarint();
+        data.official = panoType === 0 || panoType === 2;
+      } else if (tag === 2) {
+        data.id = pbf.readString();
+      }
+    }, {});
+  } catch {
+    // If it isn't a base64 encoded protobuf, it's actually official
+    return { official: true, id: panoId };
+  }
+}
+
+/** Determine if a pano ID is for an official panorama. */
+function isOfficialPanoId(id) {
+  if (id.length === 22) return true;
+  return parsePanoId(id).official;
+}
+
 function isPanoGood(pano) {
   if (settings.rejectUnofficial && !settings.rejectOfficial) {
-    if (pano.location.pano.length != 22) return false;
+    if (!isOfficialPanoId(pano.location.pano)) return false;
     // if (!/^\xA9 (?:\d+ )?Google$/.test(pano.copyright)) return false;
     if (settings.rejectNoDescription && !settings.rejectDescription && !pano.location.description && !pano.location.shortDescription) return false;
     if (settings.getIntersection && pano.links.length < 3) return false;
@@ -1007,7 +1038,7 @@ function isPanoGood(pano) {
   
   if (settings.onlyOneInTimeframe) {
     for (const loc of pano.time) {
-      if (settings.rejectUnofficial && loc.pano.length != 22) continue;
+      if (settings.rejectUnofficial && isOfficialPanoId(loc.pano)) continue;
       if (loc.pano == pano.location.pano) continue;
       const date = Object.values(loc).find((val) => val instanceof Date);
       const iDate = Date.parse(date.getFullYear() + "-" + (date.getMonth() > 8 ? "" : "0") + (date.getMonth() + 1));
@@ -1028,7 +1059,7 @@ function isPanoGood(pano) {
 	for (var i = 0; i < pano.time.length; i++) {
 		const timeframeDate = Object.values(pano.time[i]).find((val) => isDate(val));
 
-		if (settings.rejectUnofficial && pano.time[i].pano.length != 22) continue; // Checks if pano ID is 22 characters long. Otherwise, it's an Ari
+		if (settings.rejectUnofficial && !isOfficialPanoId(pano.time[i].pano)) continue;
 		const iDate = Date.parse(timeframeDate.getFullYear() + "-" + (timeframeDate.getMonth() > 8 ? "" : "0") + (timeframeDate.getMonth() + 1));
 
 		if (iDate >= fromDate && iDate <= toDate) {
@@ -1048,7 +1079,7 @@ function isPanoGood(pano) {
 		for (var i = 0; i < pano.time.length; i++) {
 			const timeframeDate = Object.values(pano.time[i]).find((val) => isDate(val));
 
-			if (settings.rejectUnofficial && pano.time[i].pano.length != 22) continue; // Checks if pano ID is 22 characters long. Otherwise, it's an Ari
+			if (settings.rejectUnofficial && !isOfficialPanoId(pano.time[i].pano)) continue;
 			const iDateMonth = timeframeDate.getMonth() + 1;
 			const iDateYear = timeframeDate.getFullYear(); 
 			
@@ -1109,7 +1140,7 @@ function getPanoDeep(id, country, depth) {
       const toDate = Date.parse(settings.toDate);
 
       for (const loc of pano.time) {
-        if (settings.rejectUnofficial && loc.pano.length != 22) continue; // Checks if pano ID is 22 characters long. Otherwise, it's an Ari
+        if (settings.rejectUnofficial && !isOfficialPanoId(loc.pano)) continue;
         const date = Object.values(loc).find((val) => val instanceof Date);
         const iDate = Date.parse(date.getFullYear() + "-" + (date.getMonth() > 8 ? "" : "0") + (date.getMonth() + 1)); // this will parse the Date object from res.time[i] (like Fri Oct 01 2021 00:00:00 GMT-0700 (Pacific Daylight Time)) to a local timestamp, like Date.parse("2021-09") == 1630454400000 for Pacific Daylight Time
         if (iDate >= fromDate && iDate <= toDate) {
@@ -1196,7 +1227,7 @@ function addLoc(pano, country) {
   const index = location.links.indexOf(pano.location.pano);
   if (index != -1) location.links.splice(index, 1);
   // Remove ari
-  const time = settings.rejectUnofficial ? pano.time.filter((entry) => entry.pano.length === 22) : pano.time;
+  const time = settings.rejectUnofficial ? pano.time.filter((entry) => isOfficialPanoId(entry.pano)) : pano.time;
   const previousPano = time[time.length - 2]?.pano
   // New road
   if (!previousPano) {
