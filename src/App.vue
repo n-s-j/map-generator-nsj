@@ -1253,15 +1253,16 @@ function addLocation(location, country, marker, iconType) {
   }
 
 const randomPointInPoly = (polygon) => {
-	const bounds = polygon.getBounds();
-	const x_min = bounds.getEast();
-	const x_max = bounds.getWest();
-	const y_min = bounds.getSouth();
-	const y_max = bounds.getNorth();
-	const lat = (Math.asin(Math.random() * (Math.sin(y_max*Math.PI/180) - Math.sin(y_min*Math.PI/180)) + Math.sin(y_min*Math.PI/180)))*180/Math.PI;
-	const lng = x_min + Math.random() * (x_max - x_min);
-	return { lat, lng };
+    let point;
+    do {
+        const bounds = polygon.getBounds();
+        const lat = Math.random() * (bounds.getNorth() - bounds.getSouth()) + bounds.getSouth();
+        const lng = Math.random() * (bounds.getEast() - bounds.getWest()) + bounds.getWest();
+        point = { lat, lng };
+    } while (!booleanPointInPolygon([point.lng, point.lat], polygon));
+    return point;
 };
+
 
 // Map features
 function onEachFeature(feature, layer) {
